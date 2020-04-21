@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    public GameObject lazerShot;
+    public GameObject lazerGun;
+    public float shotDelay;
     public float speed;
-    public float titl;
+    public float tilt;
     public float xMin, xMax, zMin, zMax;
     Rigidbody playerShip;
+
+    float nextShotTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +32,14 @@ public class PlayerScript : MonoBehaviour
 
         playerShip.position = new Vector3(xPosition, 0, zPosition);
 
-        playerShip.rotation = Quaternion.Euler(playerShip.position.z * titl, 0, playerShip.position.x * titl);
+        playerShip.rotation = Quaternion.Euler(playerShip.position.z * tilt, 0, playerShip.position.x * tilt);
+
+        if (Time.time > nextShotTime && Input.GetButton("Fire1"))
+        {
+            Instantiate(lazerShot, lazerGun.transform.position, Quaternion.identity); //создать что, где, угол наклона
+            nextShotTime = Time.time + shotDelay;
+        }
+
+        
     }
 }
